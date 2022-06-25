@@ -6,7 +6,7 @@ import pandas as pd
 from fastapi import FastAPI, Request, Query
 from typing import Optional
 from typing import Union
-
+from fastapi.middleware.cors import CORSMiddleware
 
 data = pd.read_csv('SearchWords.csv')
 ListofAllWords = list(data.Keywords)
@@ -43,6 +43,17 @@ def get_result(content_a, content_b):
 
 app = FastAPI()
 
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.post("/getInformation")
 async def getInformation(info : Request):
 
@@ -53,9 +64,11 @@ async def getInformation(info : Request):
 
     for mainWords in ListofAllWords:
         if get_result(mainWords,CurrString) > 0.3:
-            mainWords = mainWords[:len(mainWords)-1]
-            mainWords = mainWords[1:]
-            Results.append(mainWords)
+            finalString = ""
+            for i in mainWords:
+                if i.isalpha() == True or i.isspace() ==  True:
+                    finalString += i
+            Results.append(finalString)
 
     
     
