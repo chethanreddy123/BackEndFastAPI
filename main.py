@@ -62,7 +62,7 @@ app.add_middleware(
 @app.post("/getInformation")
 async def getInformation(info : Request):
 
-    print(info.body())
+    print(await info.body())
 
     req_info = await info.json()
     CurrString = dict(req_info)["SearchedString"]
