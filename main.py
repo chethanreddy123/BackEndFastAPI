@@ -9,7 +9,7 @@ from typing import Union
 from fastapi.middleware.cors import CORSMiddleware
 import json
 from fastapi.encoders import jsonable_encoder
-import requests
+#import requests
 
 data = pd.read_csv('SearchWords.csv')
 ListofAllWords = list(data.Keywords)
