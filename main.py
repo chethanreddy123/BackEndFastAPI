@@ -7,6 +7,8 @@ from fastapi import FastAPI, Request, Query
 from typing import Optional
 from typing import Union
 from fastapi.middleware.cors import CORSMiddleware
+import json
+from fastapi.encoders import jsonable_encoder
 
 data = pd.read_csv('SearchWords.csv')
 ListofAllWords = list(data.Keywords)
@@ -71,7 +73,9 @@ async def getInformation(info : Request):
             Results.append(finalString)
 
     
-    
-    return {
+    D = {
         "SearchResults" : Results
     }
+    
+
+    return jsonable_encoder(D)
