@@ -1,4 +1,3 @@
-from ast import main
 import re
 import math
 from collections import Counter
