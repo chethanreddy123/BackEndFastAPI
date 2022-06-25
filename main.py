@@ -9,6 +9,7 @@ from typing import Union
 from fastapi.middleware.cors import CORSMiddleware
 import json
 from fastapi.encoders import jsonable_encoder
+import requests
 
 data = pd.read_csv('SearchWords.csv')
 ListofAllWords = list(data.Keywords)
@@ -43,6 +44,8 @@ def get_result(content_a, content_b):
     cosine_result = get_cosine(vector1, vector2)
     return cosine_result
 
+
+
 app = FastAPI()
 
 
@@ -58,6 +61,8 @@ app.add_middleware(
 
 @app.post("/getInformation")
 async def getInformation(info : Request):
+
+    print(info)
 
     req_info = await info.json()
     CurrString = dict(req_info)["SearchedString"]
