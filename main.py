@@ -12,7 +12,7 @@ from fastapi.encoders import jsonable_encoder
 #import requests
 
 data = pd.read_csv('SearchWords.csv')
-ListofAllWords = list(data.Keywords)
+ListofAllWords = list(data.SearchedWord)
 
 def get_cosine(vec1, vec2):
     intersection = set(vec1.keys()) & set(vec2.keys())
@@ -44,6 +44,15 @@ def get_result(content_a, content_b):
     cosine_result = get_cosine(vector1, vector2)
     return cosine_result
 
+from fast_autocomplete import AutoComplete
+import pickle
+
+open_file = open( 'sample.pkl', "rb")
+loaded_list = pickle.load(open_file)
+open_file.close()
+
+words = {i : {} for i in loaded_list}
+autocomplete = AutoComplete(words=words)
 
 
 app = FastAPI()
@@ -67,6 +76,11 @@ async def getInformation(info : Request):
     req_info = await info.json()
     CurrString = dict(req_info)["SearchedString"]
     Results = []
+
+    CurrString = autocomplete.search(word = CurrString, max_cost=3, size=1)[0][0]
+
+
+
     
 
     for mainWords in ListofAllWords:
