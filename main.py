@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 from fastapi.encoders import jsonable_encoder
 #import requests
+import joblib
 
 data = pd.read_csv('SearchWords.csv')
 ListofAllWords = list(data.SearchedWord)
@@ -79,7 +80,35 @@ async def getInformation(info : Request):
 
     CurrString = autocomplete.search(word = CurrString, max_cost=3, size=1)[0][0]
 
+   
 
+    model = joblib.load('model_joblib')
+
+    TypeOf = model.predict([CurrString])
+    print(TypeOf)
+
+    k = TypeOf
+
+    if k == 0 :
+        data = pd.read_csv('2W Keywords - 2W.csv')
+        ListofAllWords = list(data.SearchedWord)
+        #print(ListofAllWords)
+    if k == 1:
+        data = pd.read_csv('4W Keywords - 4W.csv')
+        ListofAllWords = list(data.SearchedWord)
+        #print(ListofAllWords)
+    if k == 2:
+        data = pd.read_csv('Brand Keyterms - Brand Keyterms.csv')
+        ListofAllWords = list(data.SearchedWord)
+        #print(ListofAllWords)
+    if k == 3:
+        data = pd.read_csv('Health Keywords - Health.csv')
+        ListofAllWords = list(data.SearchedWord)
+        #print(ListofAllWords)
+    if k == 4:
+        data = pd.read_csv('Travel Keywords - Travel.csv')
+        ListofAllWords = list(data.SearchedWord)
+        #print(ListofAllWords)
 
     
 
