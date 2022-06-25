@@ -131,7 +131,7 @@ async def getInformation(info : Request):
                 if i.isalpha() == True or i.isspace() ==  True:
                     finalString += i
             
-            Results.append({"text" : finalString , "link" : No_to_Type(k)})
+            Results.append({"text" : finalString , "link" : No_to_Type(k), "type" : Ty})
 
     
     D = {
