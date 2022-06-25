@@ -89,28 +89,40 @@ async def getInformation(info : Request):
 
     k = TypeOf
 
+    Ty = None
+
     if k == 0 :
         data = pd.read_csv('2W Keywords - 2W.csv')
         ListofAllWords = list(data.SearchedWord)
+        Ty = "2 wheeler"
         #print(ListofAllWords)
     if k == 1:
         data = pd.read_csv('4W Keywords - 4W.csv')
         ListofAllWords = list(data.SearchedWord)
+        Ty = "4 wheeler"
         #print(ListofAllWords)
     if k == 2:
         data = pd.read_csv('Brand Keyterms - Brand Keyterms.csv')
         ListofAllWords = list(data.SearchedWord)
+        Ty = "Brand Key"
         #print(ListofAllWords)
     if k == 3:
         data = pd.read_csv('Health Keywords - Health.csv')
         ListofAllWords = list(data.SearchedWord)
+        Ty = "health"
         #print(ListofAllWords)
     if k == 4:
         data = pd.read_csv('Travel Keywords - Travel.csv')
         ListofAllWords = list(data.SearchedWord)
+        Ty = "travel"
         #print(ListofAllWords)
 
-    
+    def No_to_Type(number : int):
+        if number == 0: return "https://www.bajajallianz.com/motor-insurance/two-wheeler-insurance-online/buy-online.html?src=CBM_02671&utm_source=GoogleBrand&utm_medium=cpc&param1=Brand_Bike_Insurance-N&param2=Bajaj_Bike_Ins+Exact&param3=bajaj%20bike%20insurance&utm_content=SEM&gclid=CjwKCAjw5NqVBhAjEiwAeCa97cB-jZ2RBH9jl6bg7MVApdNkZ5Zvq7YzOQXSXFuhXqBpfwdPkusGgBoCOdUQAvD_BwE&gclsrc=aw.ds" 
+        if number == 1: return "https://www.bajajallianz.com/motor-insurance/car-insurance-online/buy-online.html?src=CBM_02671&utm_source=GoogleBrand&utm_medium=cpc&param1=Brand_Desktop_Top14Location_Apr%2720_RLSA&param2=Brand%204%20Wheeler%20Ins&param3=bajaj%20allianz%204%20wheeler%20insurance&utm_content=SEM&gclid=CjwKCAjw5NqVBhAjEiwAeCa97fI0MAp5VyGIirYEWIWp2uyiEiRRbb2VcM_C8fvSOcAyLOjrLKwe_hoCtgEQAvD_BwE&gclsrc=aw.ds"
+        if number == 2: return "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwiO6NiLy8n4AhWommYCHeMMBNUYABAAGgJzbQ&ohost=www.google.com&cid=CAESbOD2Hz3-OFW0c_OGLTqGWsuK3Xpa5uZWOi9Phk0YQlseNnG49YruFfaWCIQtKIIeHki3p6u1maPnSOnO_dUl7-d9oPUAmxW4FFCoxNJIXlA1h6RlmHhhY2YeIYNk27jOsYJrgjUfP80mjcxztw&sig=AOD64_2QU7jjds02Rt8BBDcsW0t4liXimg&q&adurl&ved=2ahUKEwjSwNGLy8n4AhXBSmwGHZW8CqcQ0Qx6BAgEEAE"
+        if number == 3: return "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwj7hr66y8n4AhXJg0sFHb03DkMYABABGgJzZg&ohost=www.google.com&cid=CAESbOD2bx0DZdDhNg4FOLp2NMTmxf2oJWdMMMr-Aq8HLZe1sskdkNct5aSBAkc0PMFx9MUkyUoLtj20Q-DXPUH3Q-EaHYMfddbx1Q42ce7BGwkrmIcPXoNKDndiuJOsWDqOaTcLjlmy3xNytkGOdg&sig=AOD64_2tkoean-AjH6tXMnnJq1BBPEgCQA&q&adurl&ved=2ahUKEwjEprW6y8n4AhX01jgGHZAQC9cQ0Qx6BAgFEAE"
+        if number == 4: return "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwiNr7PIy8n4AhWYmGYCHXDPABAYABAAGgJzbQ&ohost=www.google.com&cid=CAESbOD27_ASot0N-ToNkK7_2w7a61e-evrK9MEf9KvFMGEf0NnN0Clw-OR1g3Jg-yJoMTzGWm8dtHtBp7cobdhnHJoknmcq5hbuo2r3PxhEB5EbH1JtA8NUhM7hK-oZo6EGZ1c5Ao830So5nCMfzA&sig=AOD64_1quSStodgDTnBgzt8paQZx_NOWZA&q&adurl&ved=2ahUKEwjs9qvIy8n4AhWw2TgGHWrZAaQQ0Qx6BAgDEAE"
 
     for mainWords in ListofAllWords:
         if get_result(mainWords,CurrString) > 0.3:
@@ -118,7 +130,8 @@ async def getInformation(info : Request):
             for i in mainWords:
                 if i.isalpha() == True or i.isspace() ==  True:
                     finalString += i
-            Results.append(finalString)
+            
+            Results.append({"text" : finalString , "link" : No_to_Type(k)})
 
     
     D = {
