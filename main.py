@@ -12,8 +12,7 @@ from fastapi.encoders import jsonable_encoder
 #import requests
 import joblib
 
-data = pd.read_csv('SearchWords.csv')
-ListofAllWords = list(data.SearchedWord)
+
 
 def get_cosine(vec1, vec2):
     intersection = set(vec1.keys()) & set(vec2.keys())
@@ -48,7 +47,7 @@ def get_result(content_a, content_b):
 from fast_autocomplete import AutoComplete
 import pickle
 
-open_file = open( 'sample.pkl', "rb")
+open_file = open('sample.pkl', "rb")
 loaded_list = pickle.load(open_file)
 open_file.close()
 
@@ -78,7 +77,9 @@ async def getInformation(info : Request):
     CurrString = dict(req_info)["SearchedString"]
     Results = []
 
+    
     CurrString = autocomplete.search(word = CurrString, max_cost=3, size=1)[0][0]
+    print(CurrString)
 
    
 
@@ -116,6 +117,28 @@ async def getInformation(info : Request):
         ListofAllWords = list(data.SearchedWord)
         Ty = "travel"
         #print(ListofAllWords)
+    if k == 5:
+        data = pd.read_csv('Commercial.csv')
+        ListofAllWords = list(data.SearchedWord)
+        Ty = "Commercial"
+        #print(ListofAllWords)
+    if k == 6:
+        data = pd.read_csv('cyber.csv')
+        ListofAllWords = list(data.SearchedWord)
+        Ty = "cyber"
+        #print(ListofAllWords)
+    if k == 7:
+        data = pd.read_csv('Home Keywords.csv')
+        ListofAllWords = list(data.SearchedWord)
+        Ty = "Home"
+        #print(ListofAllWords)
+    if k == 8:
+        data = pd.read_csv('Pet Keywords.csv')
+        ListofAllWords = list(data.SearchedWord)
+        Ty = "Pet"
+        #print(ListofAllWords)
+
+    
 
     def No_to_Type(number : int):
         if number == 0: return "https://www.bajajallianz.com/motor-insurance/two-wheeler-insurance-online/buy-online.html?src=CBM_02671&utm_source=GoogleBrand&utm_medium=cpc&param1=Brand_Bike_Insurance-N&param2=Bajaj_Bike_Ins+Exact&param3=bajaj%20bike%20insurance&utm_content=SEM&gclid=CjwKCAjw5NqVBhAjEiwAeCa97cB-jZ2RBH9jl6bg7MVApdNkZ5Zvq7YzOQXSXFuhXqBpfwdPkusGgBoCOdUQAvD_BwE&gclsrc=aw.ds" 
@@ -123,6 +146,10 @@ async def getInformation(info : Request):
         if number == 2: return "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwiO6NiLy8n4AhWommYCHeMMBNUYABAAGgJzbQ&ohost=www.google.com&cid=CAESbOD2Hz3-OFW0c_OGLTqGWsuK3Xpa5uZWOi9Phk0YQlseNnG49YruFfaWCIQtKIIeHki3p6u1maPnSOnO_dUl7-d9oPUAmxW4FFCoxNJIXlA1h6RlmHhhY2YeIYNk27jOsYJrgjUfP80mjcxztw&sig=AOD64_2QU7jjds02Rt8BBDcsW0t4liXimg&q&adurl&ved=2ahUKEwjSwNGLy8n4AhXBSmwGHZW8CqcQ0Qx6BAgEEAE"
         if number == 3: return "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwj7hr66y8n4AhXJg0sFHb03DkMYABABGgJzZg&ohost=www.google.com&cid=CAESbOD2bx0DZdDhNg4FOLp2NMTmxf2oJWdMMMr-Aq8HLZe1sskdkNct5aSBAkc0PMFx9MUkyUoLtj20Q-DXPUH3Q-EaHYMfddbx1Q42ce7BGwkrmIcPXoNKDndiuJOsWDqOaTcLjlmy3xNytkGOdg&sig=AOD64_2tkoean-AjH6tXMnnJq1BBPEgCQA&q&adurl&ved=2ahUKEwjEprW6y8n4AhX01jgGHZAQC9cQ0Qx6BAgFEAE"
         if number == 4: return "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwiNr7PIy8n4AhWYmGYCHXDPABAYABAAGgJzbQ&ohost=www.google.com&cid=CAESbOD27_ASot0N-ToNkK7_2w7a61e-evrK9MEf9KvFMGEf0NnN0Clw-OR1g3Jg-yJoMTzGWm8dtHtBp7cobdhnHJoknmcq5hbuo2r3PxhEB5EbH1JtA8NUhM7hK-oZo6EGZ1c5Ao830So5nCMfzA&sig=AOD64_1quSStodgDTnBgzt8paQZx_NOWZA&q&adurl&ved=2ahUKEwjs9qvIy8n4AhWw2TgGHWrZAaQQ0Qx6BAgDEAE"
+        if number == 5: return "https://www.bajajallianz.com/commercial-insurance.html"
+        if number == 6: return "https://www.bajajallianz.com/cyber-insurance.html"
+        if number == 7: return "https://www.bajajallianz.com/home-insurance.html"
+        if number == 8: return "https://www.bajajallianz.com/general-insurance.html?utm_source=GoogleBrandBagic&param1=Enhanced_Sitelink&param2=Enhaced_Site_Link&param3=bajaj%20allianz&utm_content=SEM&gclid=CjwKCAjw5NqVBhAjEiwAeCa97T7gR6GFiFTp4qt7xJ_bozTONMjy2QJ4hN5-h5xMXVEkcK56ROS6BBoC0r4QAvD_BwE&gclsrc=aw.ds"
 
     for mainWords in ListofAllWords:
         if get_result(mainWords,CurrString) > 0.3:
