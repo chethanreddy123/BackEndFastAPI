@@ -78,7 +78,7 @@ async def getInformation(info : Request):
     Results = []
 
     
-    CurrString = autocomplete.search(word = CurrString, max_cost=3, size=1)[0][0]
+    CurrString = autocomplete.search(word = CurrString, max_cost=5, size=1)[0][0]
     print(CurrString)
 
    
@@ -88,7 +88,9 @@ async def getInformation(info : Request):
     TypeOf = model.predict([CurrString])
     print(TypeOf)
 
-    k = TypeOf
+    k = int(TypeOf[0])  
+
+    print(type(k))
 
     Ty = None
 
@@ -97,42 +99,43 @@ async def getInformation(info : Request):
         ListofAllWords = list(data.SearchedWord)
         Ty = "2 wheeler"
         #print(ListofAllWords)
-    if k == 1:
+    elif k == 1:
         data = pd.read_csv('4W Keywords - 4W.csv')
         ListofAllWords = list(data.SearchedWord)
         Ty = "4 wheeler"
         #print(ListofAllWords)
-    if k == 2:
+    elif k == 2:
         data = pd.read_csv('Brand Keyterms - Brand Keyterms.csv')
         ListofAllWords = list(data.SearchedWord)
         Ty = "Brand Key"
         #print(ListofAllWords)
-    if k == 3:
+    elif k == 3:
         data = pd.read_csv('Health Keywords - Health.csv')
         ListofAllWords = list(data.SearchedWord)
         Ty = "health"
         #print(ListofAllWords)
-    if k == 4:
+        #print(ListofAllWords)
+    elif k == 4:
         data = pd.read_csv('Travel Keywords - Travel.csv')
         ListofAllWords = list(data.SearchedWord)
         Ty = "travel"
         #print(ListofAllWords)
-    if k == 5:
+    elif k == 5:
         data = pd.read_csv('Commercial.csv')
         ListofAllWords = list(data.SearchedWord)
         Ty = "Commercial"
         #print(ListofAllWords)
-    if k == 6:
+    elif k == 6:
         data = pd.read_csv('cyber.csv')
         ListofAllWords = list(data.SearchedWord)
         Ty = "cyber"
         #print(ListofAllWords)
-    if k == 7:
+    elif k == 7:
         data = pd.read_csv('Home Keywords.csv')
         ListofAllWords = list(data.SearchedWord)
         Ty = "Home"
         #print(ListofAllWords)
-    if k == 8:
+    elif k == 8:
         data = pd.read_csv('Pet Keywords.csv')
         ListofAllWords = list(data.SearchedWord)
         Ty = "Pet"
@@ -151,18 +154,31 @@ async def getInformation(info : Request):
         if number == 7: return "https://www.bajajallianz.com/home-insurance.html"
         if number == 8: return "https://www.bajajallianz.com/general-insurance.html?utm_source=GoogleBrandBagic&param1=Enhanced_Sitelink&param2=Enhaced_Site_Link&param3=bajaj%20allianz&utm_content=SEM&gclid=CjwKCAjw5NqVBhAjEiwAeCa97T7gR6GFiFTp4qt7xJ_bozTONMjy2QJ4hN5-h5xMXVEkcK56ROS6BBoC0r4QAvD_BwE&gclsrc=aw.ds"
 
-    for mainWords in ListofAllWords:
-        if get_result(mainWords,CurrString) > 0.3:
-            finalString = ""
-            for i in mainWords:
-                if i.isalpha() == True or i.isspace() ==  True:
-                    finalString += i
-            
-            Results.append({"text" : finalString , "link" : No_to_Type(k), "type" : Ty})
+    # print(ListofAllWords)
 
+    if Ty == "health":
+        for mainWords in ListofAllWords:
+            Results.append({"text" : mainWords , "link" : No_to_Type(k), "type" : Ty})
+    else:
+        for mainWords in ListofAllWords:
+            print(mainWords)
+            if get_result(mainWords,CurrString) > 0.3:
+                print(mainWords)
+                finalString = ""
+                for i in mainWords:
+                    if i.isalpha() == True or i.isspace() ==  True:
+                        finalString += i
+                print(finalString)
+                Results.append({"text" : finalString , "link" : No_to_Type(k), "type" : Ty})
+            #Results.append({"text" : mainWords , "link" : No_to_Type(k), "type" : Ty})
+            #print(Results)
+
+    #print(D)
+    
     
     D = {
-        "SearchResults" : Results
+
+        "SearchResults" : Results[:10]
     }
     
 
