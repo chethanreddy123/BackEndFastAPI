@@ -78,7 +78,7 @@ async def getInformation(info : Request):
     Results = []
 
     
-    CurrString = autocomplete.search(word = CurrString, max_cost=5, size=1)[0][0]
+    CurrString = autocomplete.search(word = CurrString, max_cost=2, size=1)[0][0]
     print(CurrString)
 
    
